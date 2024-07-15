@@ -7,90 +7,58 @@
   <title>Register</title>
   <link rel="stylesheet" href="css/style1.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
 </head>
 
 <body>
   <div class="container">
     <div class="form-box box">
 
-
       <header>Sign Up</header>
       <hr>
 
       <form action="#" method="POST">
 
-
         <div class="form-box">
-
           <?php
-
           session_start();
-
           include "connection.php";
 
           if (isset($_POST['register'])) {
-
             $name = $_POST['username'];
             $email = $_POST['email'];
             $pass = $_POST['password'];
             $cpass = $_POST['cpass'];
-
+            $security_question = $_POST['security_question'];
+            $security_answer = $_POST['security_answer'];
 
             $check = "select * from users where email='{$email}'";
-
             $res = mysqli_query($conn, $check);
 
             $passwd = password_hash($pass, PASSWORD_DEFAULT);
-
             $key = bin2hex(random_bytes(12));
 
-
-
-
             if (mysqli_num_rows($res) > 0) {
-              echo "<div class='message'>
-        <p>This email is used, Try another One Please!</p>
-        </div><br>";
-
+              echo "<div class='message'><p>This email is used, Try another One Please!</p></div><br>";
               echo "<a href='javascript:self.history.back()'><button class='btn'>Go Back</button></a>";
-
-
             } else {
-
               if ($pass === $cpass) {
-
-                $sql = "insert into users(username,email,password) values('$name','$email','$passwd')";
-
+                $sql = "insert into users(username,email,password,security_question,security_answer) values('$name','$email','$passwd','$security_question','$security_answer')";
                 $result = mysqli_query($conn, $sql);
 
                 if ($result) {
-
-                  echo "<div class='message'>
-      <p>You are register successfully!</p>
-      </div><br>";
-
+                  echo "<div class='message'><p>You are registered successfully!</p></div><br>";
                   echo "<a href='login.php'><button class='btn'>Login Now</button></a>";
-
                 } else {
-                  echo "<div class='message'>
-        <p>This email is used, Try another One Please!</p>
-        </div><br>";
-
+                  echo "<div class='message'><p>Registration failed, please try again.</p></div><br>";
                   echo "<a href='javascript:self.history.back()'><button class='btn'>Go Back</button></a>";
                 }
-
               } else {
-                echo "<div class='message'>
-      <p>Password does not match.</p>
-      </div><br>";
-
+                echo "<div class='message'><p>Password does not match.</p></div><br>";
                 echo "<a href='signup.php'><button class='btn'>Go Back</button></a>";
               }
             }
           } else {
-
-            ?>
+          ?>
 
             <div class="input-container">
               <i class="fa fa-user icon"></i>
@@ -114,8 +82,23 @@
               <i class="fa fa-eye icon"></i>
             </div>
 
-          </div>
+            <!-- Security Question Section -->
+            <div class="input-container">
+              <i class="fa fa-question icon"></i>
+              <select class="input-field" name="security_question" required>
+                <option value="" disabled selected>Select Security Question</option>
+                <option value="What is your mother's maiden name?">What is your mother's maiden name?</option>
+                <option value="What was the name of your first pet?">What was the name of your first pet?</option>
+                <option value="What was the name of your elementary school?">What was the name of your elementary school?</option>
+              </select>
+            </div>
 
+            <div class="input-container">
+              <i class="fa fa-lock icon"></i>
+              <input class="input-field" type="text" placeholder="Security Answer" name="security_answer" required>
+            </div>
+
+          </div>
 
           <center><input type="submit" name="register" id="submit" value="Signup" class="btn"></center>
 
@@ -131,21 +114,21 @@
       </div>
       <?php
           }
-          ?>
-  </div>
+      ?>
+    </div>
 
-  <script>
-    const toggle = document.querySelector(".toggle"),
-      input = document.querySelector(".password");
-    toggle.addEventListener("click", () => {
-      if (input.type === "password") {
-        input.type = "text";
-        toggle.classList.replace("fa-eye-slash", "fa-eye");
-      } else {
-        input.type = "password";
-      }
-    })
-  </script>
+    <script>
+      const toggle = document.querySelector(".toggle"),
+        input = document.querySelector(".password");
+      toggle.addEventListener("click", () => {
+        if (input.type === "password") {
+          input.type = "text";
+          toggle.classList.replace("fa-eye-slash", "fa-eye");
+        } else {
+          input.type = "password";
+        }
+      })
+    </script>
 </body>
 
 </html>
