@@ -21,6 +21,9 @@
         <button type="button" class="btn" onclick="location.href='login.php'">Login</button>
         <br>
         <button type="button" class="btn" onclick="location.href='signup.php'" style="margin-top: 10px;">Signup</button>
+        <br>
+        <a href="forgot_password.php" style="margin-top: 10px; display: block;">Forgot Password?</a>
+        </div>
         </form>
       </div>
       <?php
