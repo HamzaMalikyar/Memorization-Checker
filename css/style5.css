@@ -9,9 +9,9 @@ body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     background-color: #e0f3ff; /* Light blue background color */
-    background-image: url('../images/back.jpg'); /* Adjusted background image path */
-    background-size: cover; /* Adjusts the background image to cover the entire body */
-    background-repeat: no-repeat; /* Prevents the background image from repeating */
+    background-image: url('../images/back.jpg'); 
+    background-size: cover; 
+    background-repeat: no-repeat; 
 }
 
 .container {
@@ -23,15 +23,15 @@ body {
 
 .site-title {
     text-align: center;
-    font-size: 36px; /* Larger font size for site title */
+    font-size: 36px; 
     color: #0066cc; /* Blue color for site title */
-    margin-top: 20px; /* Space from the top */
+    margin-top: 20px; 
 }
 
 header {
     background-color: rgba(153, 204, 255, 0.8); /* Light blue background for header with reduced opacity */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Drop shadow for header */
-    padding: 10px 0; /* Increased padding */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
+    padding: 10px 0; 
     text-align: center;
 }
 
@@ -39,8 +39,7 @@ nav ul {
     list-style-type: none;
     padding: 0;
     text-align: center;
-    margin-top: 10px; /* Space between title and nav */
-}
+    margin-top: 10px; 
 
 nav ul li {
     display: inline-block;
