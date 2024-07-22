@@ -1,0 +1,114 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorization Checker</title>
+    <link rel="stylesheet" href="css/style4.css">
+</head>
+<body>
+<div class="container">
+    <div class="box form-box">
+        <header>Memorization Checker</header>
+        <hr>
+        <div class="content">
+            <button class="record-btn" disabled>Record</button>
+            <label>
+            <textarea class="input-text"
+                placeholder="Type text here or record your voice"
+                oninput="enableButton()"></textarea>
+            </label>
+        </div>
+        <div class="output">
+            <label>
+            <textarea class="output-text"
+                 placeholder="Results will be here"></textarea>
+            </label>
+        </div>
+        <a href="home.php" class="back-btn">Back to Home</a>
+    </div>
+</div>
+<script>
+    const recordButton = document.getElementsByClassName('record-btn')[0];
+    const outputDiv = document.getElementsByClassName('output-text')[0];
+    const inputDiv = document.getElementsByClassName('input-text')[0];
+
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+    recognition.lang = 'en-US';
+
+    function enableButton() {
+        recordButton.disabled = false;
+    }
+
+    function missed_words(iArray, oArray) {
+        var count1 = 0;
+        var count2 = 0;
+        let missed_position = [];
+
+        //First check if we have reached the end of the input
+        while (count1 !== iArray.length) {
+
+            //If so, check if we reached the end of the output, if so the user missed the rest of the input
+            if (count2 === oArray.length) {
+                missed_position.push(count1);
+                count1++;
+            }
+
+            //If the words match, continue
+            else if (iArray[count1] === oArray[count2]) {
+                count1++;
+                count2++;
+            }
+
+            //If not, place the position of the missed word in missed_position
+            else {
+                missed_position.push(count1);
+                count1++;
+            }
+        }
+        return missed_position;
+    }
+
+    function highlightDifferingWords(iArray, position) {
+        const asterisk = '*';
+        for (let i in position) {
+            iArray[position[i]] = asterisk.concat(iArray[position[i]], asterisk);
+        }
+        const results = iArray.join(" ");
+        outputDiv.textContent = results;
+    }
+
+    //Once the speech recognizer starts, changes the button to "Listening..."
+    recognition.onstart = () => {
+        recordButton.textContent = 'Listening...';
+
+    };
+
+    //When the speech recognizer finishes
+    recognition.onresult = (event) => {
+        //Store the resulting transcript in outputArray
+        const transcript = event.results[0][0].transcript;
+        const outputArray = transcript.split(" ");
+
+        //And the user input as inputArray
+        let userInput = inputDiv.value.toLowerCase();
+        const inputArray = userInput.split(" ");
+
+        //Then call the function to get the position of missed words
+        const position = missed_words(inputArray, outputArray);
+
+        //And finally highlight them and display them in the output text box
+        highlightDifferingWords(inputArray, position);
+    };
+
+    //Once the speech recognizer stops registering words, change the button back to "Record"
+    recognition.onspeechend = () => {
+        recordButton.textContent = 'Record';
+    };
+
+    //Event to begin the speech recognizer
+    recordButton.addEventListener('click', () => {
+        recognition.start();
+    });
+</script>
+</body>
+</html>
