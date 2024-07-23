@@ -12,12 +12,9 @@
 <body>
   <div class="container">
     <div class="form-box box">
-
       <header>Sign Up</header>
       <hr>
-
       <form action="#" method="POST">
-
         <div class="form-box">
           <?php
           session_start();
@@ -31,19 +28,23 @@
             $security_question = $_POST['security_question'];
             $security_answer = $_POST['security_answer'];
 
-            $check = "select * from users where email='{$email}'";
-            $res = mysqli_query($conn, $check);
+            $check = "SELECT * FROM users WHERE email=?";
+            $stmt = mysqli_prepare($conn, $check);
+            mysqli_stmt_bind_param($stmt, 's', $email);
+            mysqli_stmt_execute($stmt);
+            $res = mysqli_stmt_get_result($stmt);
 
             $passwd = password_hash($pass, PASSWORD_DEFAULT);
-            $key = bin2hex(random_bytes(12));
 
             if (mysqli_num_rows($res) > 0) {
               echo "<div class='message'><p>This email is used, Try another One Please!</p></div><br>";
               echo "<a href='javascript:self.history.back()'><button class='btn'>Go Back</button></a>";
             } else {
               if ($pass === $cpass) {
-                $sql = "insert into users(username,email,password,security_question,security_answer) values('$name','$email','$passwd','$security_question','$security_answer')";
-                $result = mysqli_query($conn, $sql);
+                $sql = "INSERT INTO users (username, email, password, security_question, security_answer) VALUES (?, ?, ?, ?, ?)";
+                $stmt = mysqli_prepare($conn, $sql);
+                mysqli_stmt_bind_param($stmt, 'sssss', $name, $email, $passwd, $security_question, $security_answer);
+                $result = mysqli_stmt_execute($stmt);
 
                 if ($result) {
                   echo "<div class='message'><p>You are registered successfully!</p></div><br>";
@@ -59,29 +60,24 @@
             }
           } else {
           ?>
-
             <div class="input-container">
               <i class="fa fa-user icon"></i>
               <input class="input-field" type="text" placeholder="Username" name="username" required>
             </div>
-
             <div class="input-container">
               <i class="fa fa-envelope icon"></i>
               <input class="input-field" type="email" placeholder="Email Address" name="email" required>
             </div>
-
             <div class="input-container">
               <i class="fa fa-lock icon"></i>
               <input class="input-field password" type="password" placeholder="Password" name="password" required>
               <i class="fa fa-eye icon toggle"></i>
             </div>
-
             <div class="input-container">
               <i class="fa fa-lock icon"></i>
               <input class="input-field" type="password" placeholder="Confirm Password" name="cpass" required>
               <i class="fa fa-eye icon"></i>
             </div>
-
             <!-- Security Question Section -->
             <div class="input-container">
               <i class="fa fa-question icon"></i>
@@ -92,31 +88,24 @@
                 <option value="What was the name of your elementary school?">What was the name of your elementary school?</option>
               </select>
             </div>
-
             <div class="input-container">
               <i class="fa fa-lock icon"></i>
               <input class="input-field" type="text" placeholder="Security Answer" name="security_answer" required>
             </div>
-
           </div>
-
           <center><input type="submit" name="register" id="submit" value="Signup" class="btn"></center>
-
           <div class="links">
-            Return to Homepage? <a href="index.php">Click Here</a>
+            Return to Start Page? <a href="index.php">Click Here</a>
           </div>
-
           <div class="links">
-            Already have an account? <a href="login.php">Signin Now</a>
+            Already have an account? <a href="login.php">Sign in Now</a>
           </div>
-
         </form>
       </div>
       <?php
           }
       ?>
     </div>
-
     <script>
       const toggle = document.querySelector(".toggle"),
         input = document.querySelector(".password");
