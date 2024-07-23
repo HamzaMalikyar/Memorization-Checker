@@ -22,6 +22,8 @@
         <br>
         <button type="button" class="btn" onclick="location.href='signup.php'" style="margin-top: 10px;">Signup</button>
         <br>
+                    <button type="button" class="btn" onclick="location.href='home.php'" style="margin-top: 10px;">Proceed Without an Account</button>
+
         <a href="forgot_password.php" style="margin-top: 10px; display: block;">Forgot Password?</a>
         </div>
         </form>
