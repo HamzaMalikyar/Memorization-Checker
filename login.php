@@ -90,7 +90,7 @@ session_start();
           <center><input type="submit" name="login" id="submit" value="Login" class="btn"></center>
 
           <div class="links">
-            Return to Homepage? <a href="index.php">Click Here</a>
+            Return to Start Page? <a href="index.php">Click Here</a>
           </div>
 
           <div class="links">
