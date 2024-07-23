@@ -1,3 +1,4 @@
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -9,9 +10,9 @@ body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
     background-color: #e0f3ff; /* Light blue background color */
-    background-image: url('../images/back.jpg'); 
-    background-size: cover; 
-    background-repeat: no-repeat; 
+    background-image: url('../images/back.jpg'); /* Adjusted background image path */
+    background-size: cover; /* Adjusts the background image to cover the entire body */
+    background-repeat: no-repeat; /* Prevents the background image from repeating */
 }
 
 .container {
@@ -23,15 +24,15 @@ body {
 
 .site-title {
     text-align: center;
-    font-size: 36px; 
+    font-size: 40px; /* Larger font size for site title */
     color: #0066cc; /* Blue color for site title */
-    margin-top: 20px; 
+    margin-top: 20px; /* Space from the top */
 }
 
 header {
     background-color: rgba(153, 204, 255, 0.8); /* Light blue background for header with reduced opacity */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); 
-    padding: 10px 0; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Drop shadow for header */
+    padding: 10px 0; /* Increased padding */
     text-align: center;
 }
 
@@ -39,7 +40,8 @@ nav ul {
     list-style-type: none;
     padding: 0;
     text-align: center;
-    margin-top: 10px; 
+    margin-top: 10px; /* Space between title and nav */
+}
 
 nav ul li {
     display: inline-block;
