@@ -14,14 +14,14 @@
             <button class="record-btn" disabled>Record</button>
             <label>
             <textarea class="input-text"
-                placeholder="Type text here or record your voice"
-                oninput="enableButton()"></textarea>
+                      placeholder="Type text here or record your voice"
+                      oninput="enableButton()"></textarea>
             </label>
         </div>
         <div class="output">
             <label>
             <textarea class="output-text"
-                 placeholder="Results will be here"></textarea>
+                      placeholder="Results will be here"></textarea>
             </label>
         </div>
         <a href="home.php" class="back-btn">Back to Home</a>
@@ -34,6 +34,7 @@
 
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
     recognition.lang = 'en-US';
+    recognition.continuous = false;
 
     function enableButton() {
         recordButton.disabled = false;
@@ -77,6 +78,10 @@
         outputDiv.textContent = results;
     }
 
+    function removePunctuation(str) {
+        return str.replace(/[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g, '');
+    }
+
     //Once the speech recognizer starts, changes the button to "Listening..."
     recognition.onstart = () => {
         recordButton.textContent = 'Listening...';
@@ -90,14 +95,15 @@
         const outputArray = transcript.split(" ");
 
         //And the user input as inputArray
-        let userInput = inputDiv.value.toLowerCase();
-        const inputArray = userInput.split(" ");
+        let userInputPunctuation = inputDiv.value.split(" ")
+        let userInputNoPunctuation = removePunctuation(inputDiv.value.toLowerCase());
+        const inputArray = userInputNoPunctuation.split(" ");
 
         //Then call the function to get the position of missed words
         const position = missed_words(inputArray, outputArray);
 
         //And finally highlight them and display them in the output text box
-        highlightDifferingWords(inputArray, position);
+        highlightDifferingWords(userInputPunctuation, position);
     };
 
     //Once the speech recognizer stops registering words, change the button back to "Record"
@@ -109,6 +115,14 @@
     recordButton.addEventListener('click', () => {
         recognition.start();
     });
+
+    //recordButton.addEventListener('click', () => {
+        //if (recordButton.textContent !== 'Record') {
+            //recordButton.textContent = 'Record';
+            //recognition.stop();
+        //}
+        //recognition.start();
+    //})
 </script>
 </body>
 </html>
