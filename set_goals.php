@@ -1,3 +1,20 @@
+<?php
+session_start();
+require 'connection.php';
+
+$user_id = $_SESSION['user_id'];
+$stmt = $conn->prepare("SELECT id, goal, completed FROM goals WHERE user_id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$goals = [];
+while ($row = $result->fetch_assoc()) {
+    $goals[] = $row;
+}
+$stmt->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +22,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Set Goals - Memorization Checker</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style5.css">
+    <script>
+        function toggleGoalCompletion(goalId) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'toggle_goal.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    document.getElementById(`goal-${goalId}`).classList.toggle('completed');
+                }
+            };
+            xhr.send(`id=${goalId}`);
+        }
+
+        function deleteGoal(goalId) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'delete_goal.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    document.getElementById(`goal-${goalId}`).remove();
+                }
+            };
+            xhr.send(`id=${goalId}`);
+        }
+    </script>
 </head>
 
 <body>
@@ -24,8 +66,13 @@
 
         <h2>Your Goals</h2>
         <ul id="goalsList">
-            <li>Memorize 50 new words</li>
-            <li>Master pronunciation of 30 sentences</li>
+            <?php foreach ($goals as $goal): ?>
+                <li id="goal-<?= $goal['id'] ?>" class="<?= $goal['completed'] ? 'completed' : '' ?>">
+                    <input type="checkbox" onclick="toggleGoalCompletion(<?= $goal['id'] ?>)" <?= $goal['completed'] ? 'checked' : '' ?>>
+                    <?= htmlspecialchars($goal['goal']) ?>
+                    <button onclick="deleteGoal(<?= $goal['id'] ?>)">Delete</button>
+                </li>
+            <?php endforeach; ?>
         </ul>
     </section>
 </div>
@@ -39,4 +86,3 @@
 </body>
 
 </html>
-
