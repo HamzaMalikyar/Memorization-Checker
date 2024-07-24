@@ -29,14 +29,6 @@
             display: block;
             margin-bottom: 10px;
         }
-        .privacy-info {
-            margin-top: 20px;
-            border-top: 1px solid #ddd;
-            padding-top: 20px;
-        }
-        .privacy-info h2 {
-            margin-top: 0;
-        }
         footer {
             text-align: center;
             padding: 10px;
@@ -51,6 +43,14 @@
         .contact-form button {
             margin-top: 10px;
         }
+        .confirmation {
+            background-color: #e0ffe0;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #00cc00;
+            color: #006600;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -59,6 +59,14 @@
     <header>
         <h1>Help Center</h1>
     </header>
+
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['question'])) {
+        $question = htmlspecialchars($_POST['question']);
+        // Here you would typically save the question to a database or send it via email
+        echo '<div class="confirmation">Thank you for your question. We will get back to you soon!</div>';
+    }
+    ?>
 
     <section>
         <h2>Frequently Asked Questions (FAQs)</h2>
@@ -85,15 +93,10 @@
         </ul>
     </section>
 
-    <section class="privacy-info">
-        <h2>Privacy</h2>
-        <p><strong>Your Privacy Matters:</strong> We are committed to protecting your data. For more information on how we handle your information, please refer to our Privacy Policy.</p>
-    </section>
-
     <section class="contact-form">
         <h2>Have a Question?</h2>
-        <form action="submit_question.php" method="post">
-            <textarea name="question" placeholder="Type your question here..."></textarea>
+        <form action="helpcenter.php" method="post">
+            <textarea name="question" placeholder="Type your question here..." required></textarea>
             <button type="submit">Submit</button>
         </form>
     </section>
@@ -108,3 +111,4 @@
 </body>
 
 </html>
+
