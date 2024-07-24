@@ -20,83 +20,62 @@ session_start();
       include "connection.php";
 
       if (isset($_POST['login'])) {
-
         $email = $_POST['email'];
         $pass = $_POST['password'];
 
-        $sql = "select * from users where email='$email'";
+        // Use prepared statement to prevent SQL injection
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        $res = mysqli_query($conn, $sql);
-
-        if (mysqli_num_rows($res) > 0) {
-
-          $row = mysqli_fetch_assoc($res);
-
+        if ($result->num_rows > 0) {
+          $row = $result->fetch_assoc();
           $password = $row['password'];
 
-          $decrypt = password_verify($pass, $password);
-
-
-          if ($decrypt) {
-            $_SESSION['id'] = $row['id'];
+          if (password_verify($pass, $password)) {
+            $_SESSION['user_id'] = $row['id']; // Store user_id in session
             $_SESSION['username'] = $row['username'];
             header("location: home.php");
-
-
+            exit();
           } else {
             echo "<div class='message'>
                     <center><p>Wrong Password</p></center>
                     <center></div><br></center>";
-
             echo "<center><a href='login.php'><button class='btn'>Go Back</button></a></center>";
           }
-
         } else {
           echo "<div class='message'>
-                    <center><p>Wrong Email or Password</p></center>
-                    </div><br>";
-
+                  <center><p>Wrong Email or Password</p></center>
+                  </div><br>";
           echo "<center><a href='login.php'><button class='btn'>Go Back</button></a></center>";
-
         }
 
-
+        $stmt->close();
       } else {
-
-
-        ?>
+      ?>
 
         <header>Login</header>
         <hr>
         <form action="#" method="POST">
-
           <div class="form-box">
-
-
             <div class="input-container">
               <i class="fa fa-envelope icon"></i>
-              <input class="input-field" type="email" placeholder="Email Address" name="email">
+              <input class="input-field" type="email" placeholder="Email Address" name="email" required>
             </div>
-
             <div class="input-container">
               <i class="fa fa-lock icon"></i>
-              <input class="input-field password" type="password" placeholder="Password" name="password">
+              <input class="input-field password" type="password" placeholder="Password" name="password" required>
               <i class="fa fa-eye toggle icon"></i>
             </div>
           </div>
-
-
-
           <center><input type="submit" name="login" id="submit" value="Login" class="btn"></center>
-
           <div class="links">
             Return to Start Page? <a href="index.php">Click Here</a>
           </div>
-
           <div class="links">
             Don't have an account? <a href="signup.php">Signup Now</a>
           </div>
-
         </form>
       </div>
       <?php
