@@ -66,7 +66,20 @@
             bottom: 0;
             width: 100%;
         }
+        .thank-you-message {
+            display: none;
+            text-align: center;
+            color: #0066cc;
+            margin-top: 20px;
+        }
     </style>
+    <script>
+        function showThankYouMessage(event) {
+            event.preventDefault();
+            document.querySelector('form').style.display = 'none';
+            document.querySelector('.thank-you-message').style.display = 'block';
+        }
+    </script>
 </head>
 <body>
 <div class="container">
@@ -74,7 +87,7 @@
         <h1>Feedback</h1>
     </header>
 
-    <form action="submit_feedback.php" method="POST">
+    <form onsubmit="showThankYouMessage(event)">
         <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" required>
@@ -91,11 +104,16 @@
             <button type="submit">Submit</button>
         </div>
     </form>
+
+    <div class="thank-you-message">
+        <h2>Thank you for your feedback!</h2>
+        <p>We will get back to you shortly.</p>
+    </div>
 </div>
 
 <div class="footer">
     <p>&copy; 2024 Memorization Checker. All rights reserved.</p>
-    <p>Contact: contact@memorizationchecker.com</p>
+    <p>Contact: <a href="mailto:contact@memorizationchecker.com">contact@memorizationchecker.com</a></p>
 </div>
 
 </body>
