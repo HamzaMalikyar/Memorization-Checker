@@ -14,14 +14,14 @@
             <button class="record-btn" disabled>Record</button>
             <label>
             <textarea class="input-text"
-                placeholder="Type text here or record your voice"
-                oninput="enableButton()"></textarea>
+                      placeholder="Type text to memorize here then click Record button."
+                      oninput="enableButton()"></textarea>
             </label>
         </div>
         <div class="output">
             <label>
             <textarea class="output-text"
-                 placeholder="Results will be here"></textarea>
+                      placeholder="Results will be shown here."></textarea>
             </label>
         </div>
         <a href="home.php" class="back-btn">Back to Home</a>
@@ -43,37 +43,55 @@
     }
 
     function missed_words(inputArray, outputArray) {
-        var count1 = 0;
-        var count2 = 0;
         let missed_position = [];
-        for (let z in outputArray) {
-            if (outputArray[z] === 'I') {
-                outputArray[z] = 'i';
-            }
-        }
+        let added_position = [];
 
-        //First check if we have reached the end of the input
-        while (count1 !== inputArray.length) {
+        // Normalize the case of 'I' to 'i' in the outputArray
+        outputArray = outputArray.map(word => word === 'I' ? 'i' : word);
 
-            //If so, check if we reached the end of the output, if so the user missed the rest of the input
-            if (count2 === outputArray.length) {
-                missed_position.push(count1);
-                count1++;
-            }
+        let count1 = 0;
+        let count2 = 0;
 
-            //If the words match, continue
-            else if (inputArray[count1] === outputArray[count2]) {
+        while (count1 < inputArray.length && count2 < outputArray.length) {
+            if (inputArray[count1] === outputArray[count2]) {
                 count1++;
                 count2++;
-            }
-
-            //If not, place the position of the missed word in missed_position
-            else {
-                missed_position.push(count1);
-                count1++;
+            } else {
+                // Check if the current word in outputArray is an added word
+                if (inputArray[count1] === outputArray[count2+1]) {
+                    added_position.push(count2);
+                    count2++;
+                }
+                else if (inputArray[count1] === outputArray[count2+2] &&
+                    inputArray[count1+1] !== outputArray[count2+1]) {
+                    added_position.push(count2);
+                    added_position.push(count2+1);
+                    count2 = count2+2;
+                }
+                //If not, place the position of the missed word in missed_position
+                else {
+                    missed_position.push(count1);
+                    count1++;
+                }
             }
         }
-        return missed_position;
+
+        // If there are remaining words in inputArray, they are missed words
+        while (count1 < inputArray.length) {
+            missed_position.push(count1);
+            count1++;
+        }
+
+        // If there are remaining words in outputArray, they are added words
+        while (count2 < outputArray.length) {
+            added_position.push(count2);
+            count2++;
+        }
+
+        return {
+            array1: missed_position,
+            array2: added_position
+        };
     }
 
     function highlightDifferingWords(inputArray, position) {
@@ -81,8 +99,16 @@
         for (let i in position) {
             inputArray[position[i]] = asterisk.concat(inputArray[position[i]], asterisk);
         }
-        const results = inputArray.join(" ");
-        outputDiv.textContent = results;
+        return inputArray;
+    }
+
+    function highlightAddedWords (results, position, outputArray) {
+        const plus = '+';
+        for (let i = 0; i <= position.length; i++) {
+            results.splice(position[i], 0, outputArray[position[i]]);
+            results[position[i]] = plus.concat(results[position[i]], plus);
+        }
+        outputDiv.textContent = results.join(" ");
     }
 
     function removePunctuation(str) {
@@ -124,7 +150,13 @@
         const position = missed_words(inputArray, finalOutputArray);
 
         //And finally highlight them and display them in the output text box
-        highlightDifferingWords(userInputPunctuation, position);
+        let result = highlightDifferingWords(userInputPunctuation, position.array1);
+        if (position.array2.length === 0) {
+            outputDiv.textContent = result.join(" ");
+        }
+        else {
+            highlightAddedWords(result, position.array2, finalOutputArray);
+        }
     };
 
     recognition.nomatch = () => {
@@ -138,7 +170,16 @@
             recordButton.textContent = 'Record';
             recognition.stop();
         }
-        recognition.start();
+        if (i === 0) {
+            recognition.start();
+        }
+        else {
+            outputDiv.textContent = '';
+            i = 0;
+            finalOutputArray = [];
+            recognition.start();
+        }
+
     })
 
 </script>
