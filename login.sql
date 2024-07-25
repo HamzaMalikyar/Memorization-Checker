@@ -6,10 +6,6 @@ START TRANSACTION;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Table structure for table `users`
---
-
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `username` varchar(255) NOT NULL,
@@ -18,10 +14,6 @@ CREATE TABLE `users` (
   `security_question` varchar(255) NOT NULL,
   `security_answer` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
 
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `security_question`, `security_answer`) VALUES
 (1, 'Ajay', 'ajay@gmail.com', '12345', 'What was the name of your elementary school?', 'Georgia State Elementary School'),
@@ -43,6 +35,16 @@ CREATE TABLE goals (
     completed BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE TABLE results (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    input_text TEXT NOT NULL,
+    missed_percentage DECIMAL(5, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
