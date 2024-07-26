@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memorization Checker</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style5.css">
     <style>
         nav ul {
             list-style-type: none;
@@ -64,12 +64,12 @@
                     <a href="#">Features</a>
                     <ul class="dropdown">
                         <li><a href="set_goals.php">Set Goals</a></li>
-                        <li><a href="trackprogress.php">Track Progress</a></li>
-                        <li><a href="helpcenter.php">Help Center</a></li>
+                        <li><a href="track_progress.php">Track Progress</a></li>
+                        <li><a href="help_center.php">Help Center</a></li>
                     </ul>
                 </li>
-                <li><a href="memorizationchecker.php">Memorization Checker</a></li>
-                <li><a href="#">Logout</a></li>
+                <li><a href="memorization_checker.php">Memorization Checker</a></li>
+                <li><a href="logout.php">Logout</a></li>
             </ul>
         </nav>
     </div>
@@ -93,4 +93,3 @@
 </body>
 
 </html>
-
