@@ -1,6 +1,11 @@
 <?php
 session_start();
 require 'connection.php';
+// Check if the user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
 
 $user_id = $_SESSION['user_id'];
 $stmt = $conn->prepare("SELECT id, goal, completed FROM goals WHERE user_id = ?");
@@ -75,6 +80,7 @@ $stmt->close();
             <?php endforeach; ?>
         </ul>
     </section>
+    <a href="home.php" class="back-btn">Back to Home</a>
 </div>
 
 <footer>
