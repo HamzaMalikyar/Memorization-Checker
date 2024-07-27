@@ -66,7 +66,7 @@ if (!isset($_SESSION['user_id'])) {
 
     <section class="video-container">
         <h2>Video Tutorial 1: How to Use the App</h2>
-        <a href="https://youtu.be/r2zU1BgFZB4" class="video-link" target="_blank">Watch Tutorial 1 on YouTube</a>
+        <a href="https://youtu.be/5u0qBZfgcuc" class="video-link" target="_blank">Watch Tutorial 1 on YouTube</a>
     </section>
 
     <section class="video-container">
@@ -84,4 +84,3 @@ if (!isset($_SESSION['user_id'])) {
 </body>
 
 </html>
-
