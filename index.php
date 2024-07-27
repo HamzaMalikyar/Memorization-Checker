@@ -11,9 +11,6 @@
 <body>
   <div class="container">
     <div class="form-box box">
-
-      <?php
-        ?>
         <header>Memorization Checker</header>
         <hr>
         <form action="#" method="POST">
