@@ -43,14 +43,6 @@
         .contact-form button {
             margin-top: 10px;
         }
-        .confirmation {
-            background-color: #e0ffe0;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 1px solid #00cc00;
-            color: #006600;
-            text-align: center;
-        }
     </style>
 </head>
 
@@ -59,7 +51,6 @@
     <header>
         <h1>Help Center</h1>
     </header>
-
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['question'])) {
         $question = htmlspecialchars($_POST['question']);
@@ -67,14 +58,20 @@
         echo '<div class="confirmation">Thank you for your question. We will get back to you soon!</div>';
     }
     ?>
-
     <section>
         <h2>Frequently Asked Questions (FAQs)</h2>
         <ul>
-            <li>How do I use the memorization tools?</li>
-            <li>How do I reset my password?</li>
-            <li>What should I do if the app freezes?</li>
-            <li>How do I track my progress?</li>
+            <li><strong>How do I use the memorization tools?</strong><br>
+                You can start using the memorization tools by logging in and pressing the record button to memorize your selected text.
+            <li><strong>How do I reset my password?</strong><br>
+                To reset your password, click on the 'Forgot Password' link on the login page and follow the instructions to reset your password.
+            </li>
+            <li><strong>What should I do if the app freezes?</strong><br>
+                If the app freezes, try refreshing the page or clearing your browser's cache. If the problem persists, contact support at contact@memorizationchecker.com.
+            </li>
+            <li><strong>How do I track my progress?</strong><br>
+                You can track your progress by going to the 'Track Progress' page, where you'll see detailed statistics on your performance and progress.
+            </li>
         </ul>
     </section>
 
@@ -88,8 +85,8 @@
     <section>
         <h2>Tutorials</h2>
         <ul>
-            <li><a href="tutorial1.php">How to Use the App</a></li>
-            <li><a href="tutorial2.php">Setting Goals and Tracking Progress</a></li>
+            <li><a href="tutorials.php#use-the-app">How to Use the App</a></li>
+            <li><a href="tutorials.php#setting-goals">Setting Goals and Tracking Progress</a></li>
         </ul>
     </section>
 
