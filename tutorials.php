@@ -45,6 +45,16 @@ if (!isset($_SESSION['user_id'])) {
             background-color: #0066cc;
             color: #fff;
         }
+        .video-link {
+            display: block;
+            margin: 10px 0;
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .video-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 
@@ -56,18 +66,12 @@ if (!isset($_SESSION['user_id'])) {
 
     <section class="video-container">
         <h2>Video Tutorial 1: How to Use the App</h2>
-        <video controls width="100%">
-            <source src="videos/tutorial1.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <a href="https://youtu.be/r2zU1BgFZB4" class="video-link" target="_blank">Watch Tutorial 1 on YouTube</a>
     </section>
 
     <section class="video-container">
         <h2>Video Tutorial 2: Setting Goals and Tracking Progress</h2>
-        <video controls width="100%">
-            <source src="videos/tutorial2.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
+        <a href="https://youtu.be/IsrC1Agj6FI" class="video-link" target="_blank">Watch Tutorial 2 on YouTube</a>
     </section>
 </div>
 
