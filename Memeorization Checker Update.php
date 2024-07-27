@@ -180,7 +180,6 @@
         const missedCount = position.array1.length;
         const totalWords = inputArray.length;
         const missedPercentage = (missedCount / totalWords) * 100;
-        alert(missedPercentage)
 
         // Display the percentage of missed words
         percentageDiv.innerText = `Percentage of words missed: ${missedPercentage.toFixed(2)}%`;
@@ -192,7 +191,7 @@
     };
 
     recognition.nomatch = () => {
-        outputDiv.textContent = "Please repeat the recitation."
+        alert("Audio not uderstood. Please repeat recitation.");
     };
 
     //Event to begin the speech recognizer
