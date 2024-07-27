@@ -21,10 +21,16 @@
         </div>
         <div class="output">
             <label>
-            <textarea class="output-text"
+            <textarea class="output-text" name="Missed_words"
                  placeholder="Results will be here"></textarea>
             </label>
+            <label>
+            <textarea class="output-text" name="Added_words"
+                      placeholder="Results will be here"></textarea>
+            </label>
+
         </div>
+        <p class = 'div' id = "percentage">Percentage of missed words:</p>
         <button class="save-btn" onclick="saveResults()">Save</button>
         <a href="home.php" class="back-btn">Back to Home</a>
     </div>
@@ -32,60 +38,99 @@
 <script>
     const recordButton = document.getElementsByClassName('record-btn')[0];
     const saveButton = document.getElementsByClassName('save-btn')[0];
-    const outputDiv = document.getElementsByClassName('output-text')[0];
+    const missedDiv = document.getElementsByName('Missed_words')[0];
+    const addedDiv = document.getElementsByName('Added_words')[0];
     const inputDiv = document.getElementsByClassName('input-text')[0];
+    const percentageDiv = document.getElementById('percentage');
 
     const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
     recognition.lang = 'en-US';
     recognition.continuous = true;
     var finalOutputArray = [];
     var i = 0;
+    var percentageCounter = 0;
 
     function enableButton() {
         recordButton.disabled = false;
     }
 
     function missed_words(inputArray, outputArray) {
-        var count1 = 0;
-        var count2 = 0;
         let missed_position = [];
-        for (let z in outputArray) {
-            if (outputArray[z] === 'I') {
-                outputArray[z] = 'i';
-            }
-        }
+        let added_position = [];
 
-        //First check if we have reached the end of the input
-        while (count1 !== inputArray.length) {
+        // Normalize the case of 'I' to 'i' in the outputArray
+        outputArray = outputArray.map(word => word === 'I' ? 'i' : word);
 
-            //If so, check if we reached the end of the output, if so the user missed the rest of the input
-            if (count2 === outputArray.length) {
-                missed_position.push(count1);
-                count1++;
-            }
+        let count1 = 0;
+        let count2 = 0;
 
-            //If the words match, continue
-            else if (inputArray[count1] === outputArray[count2]) {
+        while (count1 < inputArray.length && count2 < outputArray.length) {
+            if (inputArray[count1] === outputArray[count2]) {
                 count1++;
                 count2++;
-            }
-
-            //If not, place the position of the missed word in missed_position
-            else {
-                missed_position.push(count1);
-                count1++;
+            } else {
+                // Check if the current word in outputArray is an added word
+                if (inputArray[count1] === outputArray[count2+1]) {
+                    added_position.push(count2);
+                    count2++;
+                }
+                else if (inputArray[count1] === outputArray[count2+2] &&
+                    inputArray[count1+1] !== outputArray[count2+1]) {
+                    added_position.push(count2);
+                    added_position.push(count2+1);
+                    count2 = count2+2;
+                }
+                //If not, place the position of the missed word in missed_position
+                else {
+                    missed_position.push(count1);
+                    count1++;
+                }
             }
         }
-        return missed_position;
+
+        // If there are remaining words in inputArray, they are missed words
+        while (count1 < inputArray.length) {
+            missed_position.push(count1);
+            count1++;
+        }
+
+        // If there are remaining words in outputArray, they are added words
+        while (count2 < outputArray.length) {
+            added_position.push(count2);
+            count2++;
+        }
+
+        return {
+            array1: missed_position,
+            array2: added_position
+        };
     }
 
     function highlightDifferingWords(inputArray, position) {
         const asterisk = '*';
-        for (let i in position) {
-            inputArray[position[i]] = asterisk.concat(inputArray[position[i]], asterisk);
+        if (position.length === 0){
+            missedDiv.textContent = "No missed words."
         }
-        const results = inputArray.join(" ");
-        outputDiv.textContent = results;
+        else {
+            for (let i in position) {
+                inputArray[position[i]] = asterisk.concat(inputArray[position[i]], asterisk);
+            }
+            missedDiv.textContent = inputArray.join(" ");
+        }
+
+    }
+
+    function highlightAddedWords (position, outputArray) {
+        const plus = '+';
+        if (position.length === 0){
+            addedDiv.textContent = "No added words."
+        }
+        else{
+            for (let i in position) {
+                outputArray[position[i]] = plus.concat(outputArray[position[i]], plus);
+            }
+            addedDiv.textContent = outputArray.join(" ");
+        }
     }
 
     function removePunctuation(str) {
@@ -127,16 +172,17 @@
         const position = missed_words(inputArray, finalOutputArray);
 
         //And finally highlight them and display them in the output text box
-        highlightDifferingWords(userInputPunctuation, position);
+        highlightDifferingWords(userInputPunctuation, position.array1);
+
+        highlightAddedWords(position.array2, finalOutputArray);
 
         // Calculate percentage of missed words
-        const missedCount = position.length;
+        const missedCount = position.array1.length;
         const totalWords = inputArray.length;
         const missedPercentage = (missedCount / totalWords) * 100;
 
         // Display the percentage of missed words
-        const percentageDiv = document.createElement('div');
-        percentageDiv.textContent = `Percentage of words missed: ${missedPercentage.toFixed(2)}%`;
+        percentageDiv.innerText = `Percentage of words missed: ${missedPercentage.toFixed(2)}%`;
         document.querySelector('.output').appendChild(percentageDiv);
 
         // Store results for saving
@@ -145,7 +191,7 @@
     };
 
     recognition.nomatch = () => {
-        outputDiv.textContent = "Please repeat the recitation."
+        alert("Audio not uderstood. Please repeat recitation.");
     };
 
     //Event to begin the speech recognizer
@@ -155,7 +201,16 @@
             recordButton.textContent = 'Record';
             recognition.stop();
         }
-        recognition.start();
+        if (i === 0) {
+            recognition.start();
+        }
+        else {
+            missedDiv.textContent = '';
+            addedDiv.textContent = '';
+            i = 0;
+            finalOutputArray = [];
+            recognition.start();
+        }
     });
 
     function saveResults() {
