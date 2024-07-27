@@ -65,7 +65,7 @@
                     <ul class="dropdown">
                         <li><a href="set_goals.php">Set Goals</a></li>
                         <li><a href="track_progress.php">Track Progress</a></li>
-                        <li><a href="helpcenter.php">Help Center</a></li>
+                        <li><a href="help_center.php">Help Center</a></li>
                     </ul>
                 </li>
                 <li><a href="memorization_checker.php">Memorization Checker</a></li>
