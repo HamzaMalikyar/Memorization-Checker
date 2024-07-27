@@ -20,45 +20,45 @@ include("connection.php");
 <div class="container">
     <div class="form-box box">
         <?php
-        if (isset($_POST['verify'])) { // Checks if the verify button was clicked
-            $email = $_POST['email']; // Gets the email
-            $query = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'") or die("Error occurs"); // Query the database for the email
+        if (isset($_POST['verify'])) {
+            $email = $_POST['email'];
+            $query = mysqli_query($conn, "SELECT * FROM users WHERE email = '$email'") or die("Error occurs");
 
-            if (mysqli_num_rows($query) > 0) { // If the email is found
-                $result = mysqli_fetch_assoc($query); // Fetches the result as an associative array
-                $_SESSION['reset_email'] = $result['email']; // Stores email in session
-                $_SESSION['reset_security_question'] = $result['security_question']; // Stores security question in session
-                $_SESSION['reset_security_answer'] = $result['security_answer']; // Stores security answer in session
-            } else { // If the email isnt found
+            if (mysqli_num_rows($query) > 0) {
+                $result = mysqli_fetch_assoc($query);
+                $_SESSION['reset_email'] = $result['email'];
+                $_SESSION['reset_security_question'] = $result['security_question'];
+                $_SESSION['reset_security_answer'] = $result['security_answer'];
+            } else {
                 echo "<div class='message'>
                     <center><p>Email not found. Please try again.</p></center>
                     </div><br>";
                 exit();
             }
-        } elseif (isset($_POST['reset'])) { // Checks if the reset button was clicked
-            $email = $_SESSION['reset_email']; // Gets the email from the session
-            $security_answer = $_POST['security_answer']; // Gets the security answer
-            $new_password = $_POST['new_password']; // Gets the new password
-            $new_password_hashed = password_hash($new_password, PASSWORD_DEFAULT); // Hashes new password
+        } elseif (isset($_POST['reset'])) {
+            $email = $_SESSION['reset_email'];
+            $security_answer = $_POST['security_answer'];
+            $new_password = $_POST['new_password'];
+            $new_password_hashed = password_hash($new_password, PASSWORD_DEFAULT);
 
-            if ($security_answer === $_SESSION['reset_security_answer']) { // If the security answer is correct
-                $update_query = "UPDATE users SET password=? WHERE email=?"; // Query to update password
-                $stmt = mysqli_prepare($conn, $update_query); // Prepare SQL statement
-                mysqli_stmt_bind_param($stmt, 'ss', $new_password_hashed, $email); // Bind parameters
+            if ($security_answer === $_SESSION['reset_security_answer']) {
+                $update_query = "UPDATE users SET password=? WHERE email=?";
+                $stmt = mysqli_prepare($conn, $update_query);
+                mysqli_stmt_bind_param($stmt, 'ss', $new_password_hashed, $email);
 
-                if (mysqli_stmt_execute($stmt)) { // Execute statement
+                if (mysqli_stmt_execute($stmt)) {
                     echo "<div class='message'>
                         <center><p>Password Updated!</p></center>
                         </div><br>";
                     echo "<center><a href='login.php'><button class='btn'>Log in</button></a></center>";
-                    session_unset(); // Unset all session variables
-                    session_destroy(); // Destroy the session
-                } else { // If update failed
+                    session_unset();
+                    session_destroy();
+                } else {
                     echo "<div class='message'>
                         <center><p>Update Failed. Please try again.</p></center>
                         </div><br>";
                 }
-            } else { // If the security answer is wrong
+            } else {
                 echo "<div class='message'>
                     <center><p>Incorrect security answer. Please try again.</p></center>
                     </div><br>";
@@ -109,12 +109,12 @@ include("connection.php");
 <script>
     const toggle = document.querySelector(".toggle"),
         input = document.querySelector(".password");
-    toggle.addEventListener("click", () => { // Adds click event listener to toggle element
-        if (input.type === "password") { // If input type is password
-            input.type = "text"; // Change input type to text
-            toggle.classList.replace("fa-eye-slash", "fa-eye"); // Replace class for toggle icon to show an eye
+    toggle.addEventListener("click", () => {
+        if (input.type === "password") {
+            input.type = "text";
+            toggle.classList.replace("fa-eye-slash", "fa-eye");
         } else {
-            input.type = "password"; // If input type is text, change it back to password
+            input.type = "password";
         }
     })
 </script>
