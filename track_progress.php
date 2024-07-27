@@ -106,6 +106,7 @@ $conn->close();
             </div>
         <?php endforeach; ?>
     </section>
+    <a href="home.php" class="back-btn">Back to Home</a>
 </div>
 
 <footer>
