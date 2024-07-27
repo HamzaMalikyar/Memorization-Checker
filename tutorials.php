@@ -8,6 +8,7 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -31,11 +32,12 @@ if (!isset($_SESSION['user_id'])) {
         header h1 {
             margin: 0;
         }
-        section {
-            margin-bottom: 20px;
-        }
         .tutorial-section {
             margin-bottom: 20px;
+        }
+        .video-container {
+            margin-bottom: 20px;
+            text-align: center;
         }
         footer {
             text-align: center;
@@ -52,24 +54,20 @@ if (!isset($_SESSION['user_id'])) {
         <h1>Tutorials</h1>
     </header>
 
-    <section id="use-the-app" class="tutorial-section">
-        <h2>How to Use the App</h2>
-        <p>To start using the app, follow these steps:</p>
-        <ol>
-            <li>Log in to your account.</li>
-            <li>Select or paste the text you want to memorize.</li>
-            <li>Use the provided tools to practice and track your progress.</li>
-        </ol>
+    <section class="video-container">
+        <h2>Video Tutorial 1: How to Use the App</h2>
+        <video controls width="100%">
+            <source src="videos/tutorial1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </section>
 
-    <section id="setting-goals" class="tutorial-section">
-        <h2>Setting Goals and Tracking Progress</h2>
-        <p>To set goals and track your progress, follow these steps:</p>
-        <ol>
-            <li>Go to the 'Set Goals' page.</li>
-            <li>Enter your memorization goals and save them.</li>
-            <li>Track your progress on the 'Track Progress' page.</li>
-        </ol>
+    <section class="video-container">
+        <h2>Video Tutorial 2: Setting Goals and Tracking Progress</h2>
+        <video controls width="100%">
+            <source src="videos/tutorial2.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </section>
 </div>
 
@@ -82,3 +80,4 @@ if (!isset($_SESSION['user_id'])) {
 </body>
 
 </html>
+
