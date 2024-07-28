@@ -29,10 +29,10 @@
 
 ## Required Installations
 - *XAMPP* -- https://www.apachefriends.org/download.html
-- Any IDE that can read PHP (Visual Studio Code, Notepad++, ...)
+- Any IDE that can read PHP (Visual Studio Code, Notepad++, PHPStorm, ...)
 
 ## Collaborators
-- *Alex Lyon
-- *Marrilyn Keutcha
-- *Hamza Malikyar
-- *Mark Phillips
+- Alex Lyon
+- Marrilyn Keutcha
+- Hamza Malikyar
+- Mark Phillips
