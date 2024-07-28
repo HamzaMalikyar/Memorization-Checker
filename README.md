@@ -1,11 +1,38 @@
 # Memorization-Checker
 
-You will need to download and install the Speech Recognizer and PyAudio packages for this to work (you may also need to install systemtools). The WHL files for Speech Recognizer and PyAudio can be found here:
+## Technologies Used
+- `HTML`
+- `CSS`
+- `JavaScript`
+- `PHP`
+- `MySQL`
+## Files
+- *home.php* -- The main page showed after login.
+- *index.php* -- The main page showed before login.
+- *login.php* -- Login Page.
+- *signup.php* -- Signup Page.
+- *logout.php* -- Logout to the dashboard page.
+- *connection.php* -- Connected the project to the MySQL database.
+- *about.php* -- About page.
+- *delete_goal.php* -- Deletes goals in set goals page
+- *feedback.php* -- Feedback page.
+- *forgot_password.php* -- Page for resetting password.
+- *help_center.php* -- Help center page.
+- *login.sql* -- SQL database.
+- *memorization_checker.php* -- Page for speech recognition memorization checker and saver.
+- *save_goals.php* -- Saves goals in the set goals page.
+- *save_results.php* -- Saves memorization results.
+- *set_goals.php* -- Set goals page.
+- *toggle_goal.php* -- Toggles goals.
+- *track_progress.php* -- Track progress page.
+- *tutorials.php* -- Tutorials page.
 
-https://pypi.org/project/SpeechRecognition/
+## Required Installations
+- *XAMPP* -- https://www.apachefriends.org/download.html
+- Any IDE that can read PHP (Visual Studio Code, Notepad++, ...)
 
-https://pypi.org/project/PyAudio/
-
-Under "Navigation" on the left click on "Download files" and place them in your Python folder. Once done, open a command prompt with your Python folder as the root and use the command "python -m pip install filename" with filename being the entire filename for the files.
-
-If the program does not register your microphone you will need to install systemtools using the same method for the packages (e.g. python -m pip install systemtools)
+## Collaborators
+- *Alex Lyon
+- *Marrilyn Keutcha
+- *Hamza Malikyar
+- *Mark Phillips
